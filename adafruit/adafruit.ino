@@ -32,34 +32,36 @@ currtouched1 = cap1.touched();
 currtouched2 = cap2.touched();
 
 //For A----------------------------------------------------------
-
 for (uint8_t i=0; i<12; i++) {
 if ((currtouched1 & _BV(i)) && !(lasttouched1 & _BV(i)) ) {
 //Serial.print(i); Serial.println(" touched of A");
 x = i ;
 }
-
-if (!(currtouched1 & _BV(i)) && (lasttouched1 & _BV(i)) ) {
-//Serial.print(i); Serial.println(" released o A");
-//x = i ;
-}
-
-
+  
 //For B----------------------------------------------------------
 if ((currtouched2 & _BV(i)) && !(lasttouched2 & _BV(i)) ) {
 //Serial.print(i); Serial.println(" touched of B");
 y = i ;
 }
 
-if (!(currtouched2 & _BV(i)) && (lasttouched2 & _BV(i)) ) {
-//Serial.print(i); Serial.println(" released of B");
-//y = i ;
+/** these two if conditions will make sure that sensor 1 and 2 are touched at the 
+ same time when the data is sent via serial port. x and y receive value 20 
+that means that it's currently not touched. 
+**/
+if (!currtouched1 & _BV(i)){
+  x = 20 ;
+  }
+
+if (!currtouched2 & _BV(i)){
+  y = 20 ;
+  }
+
 }
-}
-if ((x != lastx) || (y != lasty)){
+if (((x != lastx) || (y != lasty)) && ((x != 20) && (y != 20))){
   sprintf(Buffer,"%d %d",x,y) ;
   Serial.println(Buffer) ;
 }
+
 lasttouched1 = currtouched1;
 lasttouched2 = currtouched2;
 lastx = x ;

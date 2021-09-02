@@ -55,12 +55,23 @@ if (!currtouched1 & _BV(i)){
 if (!currtouched2 & _BV(i)){
   y = 20 ;
   }
-
+  
+  // gives value 21 to x and y if both sensors are not touched
+if ((!currtouched1 & _BV(i)) && (!currtouched2 & _BV(i))){
+  x = 21 ;
+  y = 21 ;
+  sprintf(Buffer,"%d %d",x,y) ;
+  Serial.println(Buffer) ;
+  }
 }
+
+// check if both sensors are touched and that one of them (x and y) value are changed
 if (((x != lastx) || (y != lasty)) && ((x != 20) && (y != 20))){
   sprintf(Buffer,"%d %d",x,y) ;
   Serial.println(Buffer) ;
 }
+
+
 
 lasttouched1 = currtouched1;
 lasttouched2 = currtouched2;
